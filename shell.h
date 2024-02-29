@@ -1,4 +1,3 @@
-A
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
@@ -90,11 +89,6 @@ typedef struct passinfo
 	char **environ;
 	int env_changed;
 	int status;
-	int readfd;
-	int histcount;
-	int linecount_flag;
-	int cmd_buf_type;
-	char **arg;
 	char **cmd_buffer;
 
 	char **cmd_buf; /* pointer to cmd ; chain buffer, for memory mangement */
