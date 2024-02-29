@@ -1,3 +1,4 @@
+A
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
@@ -11,6 +12,7 @@
 #include <limits.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <signal.h>
 
 /* for read/write buffers */
 #define READ_BUF_SIZE 1024
@@ -88,6 +90,12 @@ typedef struct passinfo
 	char **environ;
 	int env_changed;
 	int status;
+	int readfd;
+	int histcount;
+	int linecount_flag;
+	int cmd_buf_type;
+	char **arg;
+	char **cmd_buffer;
 
 	char **cmd_buf; /* pointer to cmd ; chain buffer, for memory mangement */
 	int cmd_buf_type; /* CMD_type ||, &&, ; */
@@ -183,9 +191,11 @@ int _myhistory(info_t *);
 int _myalias(info_t *);
 
 /*toem_getline.c */
-ssize_t get_input(info_t *);
-int _getline(info_t *, char **, size_t *);
-void sigintHandler(int);
+ssize_t buffer_input(info_t *info, char **buffer, size_t *length);
+ssize_t obtain_input(info_t *info);
+ssize_t read_buffer(info_t *info, char *buffer, size_t *size);
+int custom_getline(info_t *info, char **ptr, size_t *length);
+void handle_interrupt(__attribute__((unused)) int signal_number);
 
 /* toem_getinfo.c */
 void clear_info(info_t *);
