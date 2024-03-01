@@ -1,22 +1,22 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * cd_par - changes directory to the parent directory
- * @datarel: data that is relevant
- * Return: returns nothing
+ * cd_dot - it changes to the parent directory
+ * @datash: the data relevant (environ)
+ * Return: it returns nothing
  */
-void cd_par(data_shell *datarel)
+void cd_dot(data_shell *datash)
 {
 	char pwd[PATH_MAX];
 	char *dir, *cp_pwd, *cp_strtok_pwd;
 
 	getcwd(pwd, sizeof(pwd));
 	cp_pwd = _strdup(pwd);
-	set_variable("OLDPWD", cp_pwd, datarel);
-	dir = datarel->args[1];
+	set_env("OLDPWD", cp_pwd, datash);
+	dir = datash->args[1];
 	if (_strcmp(".", dir) == 0)
 	{
-		set_variable("PWD", cp_pwd, datarel);
+		set_env("PWD", cp_pwd, datash);
 		free(cp_pwd);
 		return;
 	}
@@ -26,70 +26,70 @@ void cd_par(data_shell *datarel)
 		return;
 	}
 	cp_strtok_pwd = cp_pwd;
-	rev_str(cp_strtok_pwd);
+	rev_string(cp_strtok_pwd);
 	cp_strtok_pwd = _strtok(cp_strtok_pwd, "/");
 	if (cp_strtok_pwd != NULL)
 	{
 		cp_strtok_pwd = _strtok(NULL, "\0");
 
 		if (cp_strtok_pwd != NULL)
-			rev_str(cp_strtok_pwd);
+			rev_string(cp_strtok_pwd);
 	}
 	if (cp_strtok_pwd != NULL)
 	{
 		chdir(cp_strtok_pwd);
-		set_variable("PWD", cp_strtok_pwd, datarel);
+		set_env("PWD", cp_strtok_pwd, datash);
 	}
 	else
 	{
 		chdir("/");
-		set_variable("PWD", "/", datarel);
+		set_env("PWD", "/", datash);
 	}
-	datarel->status = 0;
+	datash->status = 0;
 	free(cp_pwd);
 }
 
 /**
- * cd_to - changes directory to a directory given
+ * cd_to - it changes to a directory given
  * by the user
- * @datarel: the data that is relevant
- * Return: returns nothing
+ * @datash: the data relevant (directories)
+ * Return: it returns nothing
  */
-void cd_to(data_shell *datarel)
+void cd_to(data_shell *datash)
 {
 	char pwd[PATH_MAX];
 	char *dir, *cp_pwd, *cp_dir;
 
 	getcwd(pwd, sizeof(pwd));
 
-	dir = datarel->args[1];
+	dir = datash->args[1];
 	if (chdir(dir) == -1)
 	{
-		call_error(datarel, 2);
+		get_error(datash, 2);
 		return;
 	}
 
 	cp_pwd = _strdup(pwd);
-	set_variable("OLDPWD", cp_pwd, datarel);
+	set_env("OLDPWD", cp_pwd, datash);
 
 	cp_dir = _strdup(dir);
-	set_variable("PWD", cp_dir, datarel);
+	set_env("PWD", cp_dir, datash);
 
 	free(cp_pwd);
 	free(cp_dir);
 
-	datarel->status = 0;
+	datash->status = 0;
 
 	chdir(dir);
 }
 
 /**
- * cd_previous - changes directory to the previous directory
- * @datarel: data that is relevant
- * Return: return nothing
+ * cd_previous - it changes to the previous directory
+ * @datash: the data relevant (environ)
+ * Return: it return nothing
  */
 
-void cd_previous(data_shell *datarel)
+void cd_previous(data_shell *datash)
 {
 	char pwd[PATH_MAX];
 	char *p_pwd, *p_oldpwd, *cp_pwd, *cp_oldpwd;
@@ -97,21 +97,21 @@ void cd_previous(data_shell *datarel)
 	getcwd(pwd, sizeof(pwd));
 	cp_pwd = _strdup(pwd);
 
-	p_oldpwd = _getvar("OLDPWD", datarel->_var);
+	p_oldpwd = _getenv("OLDPWD", datash->_environ);
 
 	if (p_oldpwd == NULL)
 		cp_oldpwd = cp_pwd;
 	else
 		cp_oldpwd = _strdup(p_oldpwd);
 
-	set_variable("OLDPWD", cp_pwd, datarel);
+	set_env("OLDPWD", cp_pwd, datash);
 
 	if (chdir(cp_oldpwd) == -1)
-		set_variable("PWD", cp_pwd, datarel);
+		set_env("PWD", cp_pwd, datash);
 	else
-		set_variable("PWD", cp_oldpwd, datarel);
+		set_env("PWD", cp_oldpwd, datash);
 
-	p_pwd = _getvar("PWD", datarel->_var);
+	p_pwd = _getenv("PWD", datash->_environ);
 
 	write(STDOUT_FILENO, p_pwd, _strlen(p_pwd));
 	write(STDOUT_FILENO, "\n", 1);
@@ -120,17 +120,17 @@ void cd_previous(data_shell *datarel)
 	if (p_oldpwd)
 		free(cp_oldpwd);
 
-	datarel->status = 0;
+	datash->status = 0;
 
 	chdir(p_pwd);
 }
 
 /**
- * cd_home - changes directory to home directory
- * @datarel: data that is relevant
- * Return: returns nothing
+ * cd_to_home - it changes to home directory
+ * @datash: the data relevant (environ)
+ * Return: it  returns nothing
  */
-void cd_home(data_shell *datarel)
+void cd_to_home(data_shell *datash)
 {
 	char *p_pwd, *home;
 	char pwd[PATH_MAX];
@@ -138,24 +138,24 @@ void cd_home(data_shell *datarel)
 	getcwd(pwd, sizeof(pwd));
 	p_pwd = _strdup(pwd);
 
-	home = _getvar("HOME", datarel->_var);
+	home = _getenv("HOME", datash->_environ);
 
 	if (home == NULL)
 	{
-		set_variable("OLDPWD", p_pwd, datarel);
+		set_env("OLDPWD", p_pwd, datash);
 		free(p_pwd);
 		return;
 	}
 
 	if (chdir(home) == -1)
 	{
-		call_error(datarel, 2);
+		get_error(datash, 2);
 		free(p_pwd);
 		return;
 	}
 
-	set_variable("OLDPWD", p_pwd, datarel);
-	set_variable("PWD", home, datarel);
+	set_env("OLDPWD", p_pwd, datash);
+	set_env("PWD", home, datash);
 	free(p_pwd);
-	datarel->status = 0;
+	datash->status = 0;
 }
