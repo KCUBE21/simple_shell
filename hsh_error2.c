@@ -1,21 +1,21 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * error_env - the error message for env in get_env.
- * @datarel: the data relevant (counter, arguments)
- * Return: return error message.
+ * @datash: the data relevant (counter, arguments)
+ * Return: Always return error message.
  */
-char *error_env(data_shell *datarel)
+char *error_env(data_shell *datash)
 {
 	int length;
 	char *error;
 	char *ver_str;
 	char *msg;
 
-	ver_str = hsh_itoa(datarel->counter);
+	ver_str = hsh_itoa(datash->counter);
 	msg = ": Unable to add/remove from environment\n";
-	length = _strlen(datarel->av[0]) + _strlen(ver_str);
-	length += _strlen(datarel->args[0]) + _strlen(msg) + 4;
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + _strlen(msg) + 4;
 	error = malloc(sizeof(char) * (length + 1));
 	if (error == 0)
 	{
@@ -24,11 +24,11 @@ char *error_env(data_shell *datarel)
 		return (NULL);
 	}
 
-	_strcpy(error, datarel->av[0]);
+	_strcpy(error, datash->av[0]);
 	_strcat(error, ": ");
 	_strcat(error, ver_str);
 	_strcat(error, ": ");
-	_strcat(error, datarel->args[0]);
+	_strcat(error, datash->args[0]);
 	_strcat(error, msg);
 	_strcat(error, "\0");
 	free(ver_str);
@@ -37,19 +37,19 @@ char *error_env(data_shell *datarel)
 }
 
 /**
- * error_path - the error message for path and failure denied permission.
- * @datarel: the data relevant.
- * Return: The error string.
+ * error_path_126 - the error message for path and failure denied permission.
+ * @datash: the data relevant (counter, arguments).
+ * Return: Always The error string.
  */
-char *error_path(data_shell *datarel)
+char *error_path_126(data_shell *datash)
 {
 	int length;
 	char *ver_str;
 	char *error;
 
-	ver_str = hsh_itoa(datarel->counter);
-	length = _strlen(datarel->av[0]) + _strlen(ver_str);
-	length += _strlen(datarel->args[0]) + 24;
+	ver_str = hsh_itoa(datash->counter);
+	length = _strlen(datash->av[0]) + _strlen(ver_str);
+	length += _strlen(datash->args[0]) + 24;
 	error = malloc(sizeof(char) * (length + 1));
 	if (error == 0)
 	{
@@ -57,11 +57,11 @@ char *error_path(data_shell *datarel)
 		free(ver_str);
 		return (NULL);
 	}
-	_strcpy(error, datarel->av[0]);
+	_strcpy(error, datash->av[0]);
 	_strcat(error, ": ");
 	_strcat(error, ver_str);
 	_strcat(error, ": ");
-	_strcat(error, datarel->args[0]);
+	_strcat(error, datash->args[0]);
 	_strcat(error, ": Permission denied\n");
 	_strcat(error, "\0");
 	free(ver_str);
