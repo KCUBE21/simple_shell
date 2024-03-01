@@ -1,9 +1,9 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * add_rvar_node - adds a variable at the end of a r_var list.
- * @head: the head of linked list.
- * @lvar: the length of variable.
+ * @head: the head of  linked list.
+ * @lvar: the length of  variable.
  * @val: the value of  variable.
  * @lval: the length of value.
  * Return: the address of the head.
@@ -61,4 +61,3 @@ void free_rvar_list(r_var **head)
 		*head = NULL;
 	}
 }
-
