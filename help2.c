@@ -1,10 +1,10 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * help - Help information for the builtin help.
- * Return: returns nothing
+ * hsh_help - The Help information for the builtin help.
+ * Return: it returns nothing
  */
-void help(void)
+void hsh_help(void)
 {
 	char *help = "help: help [-dms] [pattern ...]\n";
 
@@ -15,10 +15,10 @@ void help(void)
 	write(STDOUT_FILENO, help, _strlen(help));
 }
 /**
- * help_alias - The Help information for the builtin alias.
- * Return: returns nothing
+ * hsh_help_alias - The Help information for the builtin alias.
+ * Return: it returns nothing
  */
-void help_alias(void)
+void hsh_help_alias(void)
 {
 	char *help = "alias: alias [-p] [name[=value]...]\n";
 
@@ -27,10 +27,10 @@ void help_alias(void)
 	write(STDOUT_FILENO, help, _strlen(help));
 }
 /**
- * help_cd - The Help information for the builtin alias.
+ * hsh_help_cd - The Help information for the builtin alias.
  * Return: it returns nothing
  */
-void help_cd(void)
+void hsh_help_cd(void)
 {
 	char *help = "cd: cd [-L|[-P [-e]] [-@]] [dir]\n";
 
