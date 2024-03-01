@@ -1,24 +1,24 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * ass_line - assigns the line var for get_line
- * @instr: the Buffer that store the input str
+ * bring_line - it assigns the line var for get_line
+ * @lineptr: the Buffer that store the input str
  * @buffer: the str that is been called to line
  * @n: the size of line
  * @j: the size of buffer
- * Return: returns nothing
+ * Return: It returns nothing
  */
-void ass_line(char **instr, size_t *n, char *buffer, size_t j)
+void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
 {
 
-	if (*instr == NULL)
+	if (*lineptr == NULL)
 	{
 		if  (j > BUFSIZE)
 			*n = j;
 
 		else
 			*n = BUFSIZE;
-		*instr = buffer;
+		*lineptr = buffer;
 	}
 	else if (*n < j)
 	{
@@ -26,22 +26,22 @@ void ass_line(char **instr, size_t *n, char *buffer, size_t j)
 			*n = j;
 		else
 			*n = BUFSIZE;
-		*instr = buffer;
+		*lineptr = buffer;
 	}
 	else
 	{
-		_strcpy(*instr, buffer);
+		_strcpy(*lineptr, buffer);
 		free(buffer);
 	}
 }
 /**
  * get_line - It Read inpt from stream
- * @instr: the buffer that stores the input
- * @n: the size of instr
+ * @lineptr: the buffer that stores the input
+ * @n: the size of lineptr
  * @stream: The stream to read from
  * Return: Returns The number of bytes
  */
-ssize_t get_line(char **instr, size_t *n, FILE *stream)
+ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 {
 	int i;
 	static ssize_t input;
@@ -77,7 +77,7 @@ ssize_t get_line(char **instr, size_t *n, FILE *stream)
 		input++;
 	}
 	buffer[input] = '\0';
-	ass_line(instr, n, buffer, input);
+	bring_line(lineptr, n, buffer, input);
 	retval = input;
 	if (i != 0)
 		input = 0;
