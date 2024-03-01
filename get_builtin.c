@@ -1,11 +1,11 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * pass_builtin - builtin that pass the command in the arg
+ * get_builtin - it builtin that pais the command in the arg
  * @cmd: the command
  * Return: Awlays return function pointer of the builtin command
  */
-int (*pass_builtin(char *cmd))(data_shell *)
+int (*get_builtin(char *cmd))(data_shell *)
 {
 	builtin_t builtin[] = {
 		{ "env", _env },
