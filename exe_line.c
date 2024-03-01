@@ -1,23 +1,23 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * buil_cmd - it finds builtins and commands
+ * exec_line - it finds builtins and commands
  *
- * @datarel: the data relevant (args)
+ * @datash: the data relevant (args)
  * Return: it returns  1 on success.
  */
 
-int buil_cmd(data_shell *datarel)
+int exec_line(data_shell *datash)
 {
-	int (*builtin)(data_shell *datarel);
+	int (*builtin)(data_shell *datash);
 
-	if (datarel->args[0] == NULL)
+	if (datash->args[0] == NULL)
 		return (1);
 
-	builtin = pass_builtin(datarel->args[0]);
+	builtin = get_builtin(datash->args[0]);
 
 	if (builtin != NULL)
-		return (builtin(datarel));
+		return (builtin(datash));
 
-	return (cmd_exec(datarel));
+	return (cmd_exec(datash));
 }
