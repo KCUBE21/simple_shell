@@ -1,10 +1,10 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * help_var - The Help information for the builtin var
- * Return: returns nothing
+ * hsh_help_env - The Help information for the builtin env
+ * Return: It returns nothing
  */
-void help_var(void)
+void hsh_help_env(void)
 {
 	char *help = "env: env [option] [name=value] [command [args]]\n\t";
 
@@ -14,10 +14,10 @@ void help_var(void)
 
 }
 /**
- * help_setvar - The Help information for the builtin setenv
- * Return: returns nothing
+ * hsh_help_setenv - The Help information for the builtin setenv
+ * Return: It returns nothing
  */
-void help_setvar(void)
+void hsh_help_setenv(void)
 {
 
 	char *help = "setenv: setenv (const char *name, const char *value,";
@@ -29,10 +29,10 @@ void help_setvar(void)
 	write(STDOUT_FILENO, help, _strlen(help));
 }
 /**
- * help_unsetvar - The Help information for the builtin unsetvar
- * Return: returns nothing
+ * hsh_help_unsetenv - The Help information for the builtin unsetenv
+ * Return: it returns nothing
  */
-void help_unsetvar(void)
+void hsh_help_unsetenv(void)
 {
 	char *help = "unsetenv: unsetenv (const char *name)\n\t";
 
@@ -43,10 +43,10 @@ void help_unsetvar(void)
 
 
 /**
- * help_general - The Entry point for help information for the help builtin
+ * hsh_help_general - The Entry point for help information for the help builtin
  * Return: it returns nothing
  */
-void help_general(void)
+void hsh_help_general(void)
 {
 	char *help = "^-^ bash, version 1.0(1)-release\n";
 
@@ -65,10 +65,10 @@ void help_general(void)
 	write(STDOUT_FILENO, help, _strlen(help));
 }
 /**
- * help_exit - Help information for the builint exit
-* Return: returns nothing
+ * hsh_help_exit - it Help information fot the builint exit
+* Return: It returns nothing
  */
-void help_exit(void)
+void hsh_help_exit(void)
 {
 	char *help = "exit: exit [n]\n Exit shell.\n";
 
@@ -78,4 +78,3 @@ void help_exit(void)
 	help = "statusis that of the last command executed\n";
 	write(STDOUT_FILENO, help, _strlen(help));
 }
-
