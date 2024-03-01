@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * add_sepa_node_end - it adds a separator found at the end
