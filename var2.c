@@ -1,11 +1,11 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * copy_info - copies info to create
- * a new variable or alias
- * @name: the name (variable or alias)
- * @value: the value (variable or alias)
- * Return: returns new variableor alias.
+ * copy_info - it copies info to create
+ * a new env or alias
+ * @name: the name (env or alias)
+ * @value: the value (env or alias)
+ * Return: returns new env or alias.
  */
 char *copy_info(char *name, char *value)
 {
@@ -25,101 +25,101 @@ char *copy_info(char *name, char *value)
 }
 
 /**
- * set_variable - sets an environment variable
+ * set_env - it sets an environment variable
  * @name: the name of the environment variable
  * @value: the value of the environment variable
- * @datarel: the data structure (environ)
- * Return: returns nothing
+ * @datash: the data structure (environ)
+ * Return: it  returns nothing
  */
-void set_variable(char *name, char *value, data_shell *datarel)
+void set_env(char *name, char *value, data_shell *datash)
 {
 	int i;
-	char *var_variable, *name_variable;
+	char *var_env, *name_env;
 
-	for (i = 0; datarel->_var[i]; i++)
+	for (i = 0; datash->_environ[i]; i++)
 	{
-		var_variable = _strdup(datarel->_var[i]);
-		name_variable = _strtok(var_variable, "=");
-		if (_strcmp(name_variable, name) == 0)
+		var_env = _strdup(datash->_environ[i]);
+		name_env = _strtok(var_env, "=");
+		if (_strcmp(name_env, name) == 0)
 		{
-			free(datarel->_var[i]);
-			datarel->_var[i] = copy_info(name_variable, value);
-			free(var_variable);
+			free(datash->_environ[i]);
+			datash->_environ[i] = copy_info(name_env, value);
+			free(var_env);
 			return;
 		}
-		free(var_variable);
+		free(var_env);
 	}
 
-	datarel->_var = _reallocdp(datarel->_var, i, sizeof(char *) * (i + 2));
-	datarel->_var[i] = copy_info(name, value);
-	datarel->_var[i + 1] = NULL;
+	datash->_environ = _reallocdp(datash->_environ, i, sizeof(char *) * (i + 2));
+	datash->_environ[i] = copy_info(name, value);
+	datash->_environ[i + 1] = NULL;
 }
 
 /**
- * _cmpvar - it compares env variables names
+ * _setenv - it compares env variables names
  * with the name passed.
- * @datarel: the data relevant (env name and env value)
+ * @datash: the data relevant (env name and env value)
  * Return: Always returns 1 on success.
  */
 
-int _cmpvar(data_shell *datarel)
+int _setenv(data_shell *datash)
 {
 
-	if (datarel->args[1] == NULL || datarel->args[2] == NULL)
+	if (datash->args[1] == NULL || datash->args[2] == NULL)
 	{
-		call_error(datarel, -1);
+		get_error(datash, -1);
 		return (1);
 	}
 
-	set_variable(datarel->args[1], datarel->args[2], datarel);
+	set_env(datash->args[1], datash->args[2], datash);
 
 	return (1);
 }
 
 /**
- * _delvar - deletes a environment variable
- * @datarel: the data relevant (env name)
+ * _unsetenv - deletes a environment variable
+ * @datash: the data relevant (env name)
  * Return: Always return 1 on success.
  */
-int _delvar(data_shell *datarel)
+int _unsetenv(data_shell *datash)
 {
-	char **realloc_var;
-	char *var_variable, *name_variable;
+	char **realloc_environ;
+	char *var_env, *name_env;
 	int i, j, k;
 
-	if (datarel->args[1] == NULL)
+	if (datash->args[1] == NULL)
 	{
-		call_error(datarel, -1);
+		get_error(datash, -1);
 		return (1);
 	}
 	k = -1;
-	for (i = 0; datarel->_var[i]; i++)
+	for (i = 0; datash->_environ[i]; i++)
 	{
-		var_variable = _strdup(datarel->_var[i]);
-		name_variable = _strtok(var_variable, "=");
-		if (_strcmp(name_variable, datarel->args[1]) == 0)
+		var_env = _strdup(datash->_environ[i]);
+		name_env = _strtok(var_env, "=");
+		if (_strcmp(name_env, datash->args[1]) == 0)
 		{
 			k = i;
 		}
-		free(var_variable);
+		free(var_env);
 	}
 	if (k == -1)
 	{
-		call_error(datarel, -1);
+		get_error(datash, -1);
 		return (1);
 	}
-	realloc_var = malloc(sizeof(char *) * (i));
-	for (i = j = 0; datarel->_var[i]; i++)
+	realloc_environ = malloc(sizeof(char *) * (i));
+	for (i = j = 0; datash->_environ[i]; i++)
 	{
 		if (i != k)
 		{
-			realloc_var[j] = datarel->_var[i];
+			realloc_environ[j] = datash->_environ[i];
 			j++;
 		}
 	}
-	realloc_var[j] = NULL;
-	free(datarel->_var[k]);
-	free(datarel->_var);
-	datarel->_var = realloc_var;
+	realloc_environ[j] = NULL;
+	free(datash->_environ[k]);
+	free(datash->_environ);
+	datash->_environ = realloc_environ;
 	return (1);
 }
