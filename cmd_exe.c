@@ -1,13 +1,13 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * is_currdir - it checks ":" if it is in the current directory.
+ * is_cdir - it checks ":" if is in the current directory.
  * @path: the type char pointer char.
- * @i: pointer to index.
- * Return: return 1 if the path is searchable in the cd, 0 if otherwise.
+ * @i: the type int pointer of index.
+ * Return: Always return 1 if the path is searchable in the cd, 0 otherwise.
  */
 
-int is_currdir(char *path, int *i)
+int is_cdir(char *path, int *i)
 {
 	if (path[*i] == ':')
 		return (1);
@@ -24,19 +24,19 @@ int is_currdir(char *path, int *i)
 }
 
 /**
- * which_cmd - it locates a command
+ * _which - it locates a command
  * @cmd: the command name
- * @_var: the environment variable
- * Return: return location of the command.
+ * @_environ: the environment variable
+ * Return: Always return location of the command.
  */
 
-char *which_cmd(char *cmd, char **_var)
+char *_which(char *cmd, char **_environ)
 {
 	char *path, *ptr_path, *token_path, *dir;
 	int len_dir, len_cmd, i;
 	struct stat st;
 
-	path = _getvar("PATH", _var);
+	path = _getenv("PATH", _environ);
 	if (path)
 	{
 		ptr_path = _strdup(path);
@@ -45,7 +45,7 @@ char *which_cmd(char *cmd, char **_var)
 		i = 0;
 		while (token_path != NULL)
 		{
-			if (is_currdir(path, &i))
+			if (is_cdir(path, &i))
 				if (stat(cmd, &st) == 0)
 					return (cmd);
 			len_dir = _strlen(token_path);
@@ -75,17 +75,17 @@ char *which_cmd(char *cmd, char **_var)
 
 /**
  * is_executable - it determines if is an executable
- * @datarel: the data structure
- * Return: returns 0 if is not an executable, other number if otherwise
+ * @datash: the data structure
+ * Return: Always returns 0 if is not an executable, other number if it does
  */
 
-int is_executable(data_shell *datarel)
+int is_executable(data_shell *datash)
 {
 	struct stat st;
 	int i;
 	char *input;
 
-	input = datarel->args[0];
+	input = datash->args[0];
 	for (i = 0; input[i]; i++)
 	{
 		if (input[i] == '.')
@@ -114,30 +114,30 @@ int is_executable(data_shell *datarel)
 	{
 		return (i);
 	}
-	call_error(datarel, 127);
+	get_error(datash, 127);
 	return (-1);
 }
 
 /**
- * error_cmd - it verifies if user has permissions to access
+ * check_error_cmd - it verifies if user has permissions to access
  * @dir: the destination directory
- * @datarel: the data structure
- * Return: return 1 if there is an error, 0 if not
+ * @datash: the data structure
+ * Return: Always return 1 if there is an error, 0 if not
  */
 
-int error_cmd(char *dir, data_shell *datarel)
+int check_error_cmd(char *dir, data_shell *datash)
 {
 	if (dir == NULL)
 	{
-		call_error(datarel, 127);
+		get_error(datash, 127);
 		return (1);
 	}
 
-	if (_strcmp(datarel->args[0], dir) != 0)
+	if (_strcmp(datash->args[0], dir) != 0)
 	{
 		if (access(dir, X_OK) == -1)
 		{
-			call_error(datarel, 126);
+			get_error(datash, 126);
 			free(dir);
 			return (1);
 		}
@@ -145,9 +145,9 @@ int error_cmd(char *dir, data_shell *datarel)
 	}
 	else
 	{
-		if (access(datarel->args[0], X_OK) == -1)
+		if (access(datash->args[0], X_OK) == -1)
 		{
-			call_error(datarel, 126);
+			get_error(datash, 126);
 			return (1);
 		}
 	}
@@ -157,11 +157,11 @@ int error_cmd(char *dir, data_shell *datarel)
 
 /**
  * cmd_exec - it executes command lines
- * @datarel: the data relevant (args and input)
+ * @datash: the data relevant (args and input)
  * Return: Always return 1 on success.
  */
 
-int cmd_exec(data_shell *datarel)
+int cmd_exec(data_shell *datash)
 {
 	pid_t pd;
 	pid_t wpd;
@@ -170,13 +170,13 @@ int cmd_exec(data_shell *datarel)
 	char *dir;
 	(void) wpd;
 
-	exec = is_executable(datarel);
+	exec = is_executable(datash);
 	if (exec == -1)
 		return (1);
 	if (exec == 0)
 	{
-		dir = which_cmd(datarel->args[0], datarel->_var);
-		if (error_cmd(dir, datarel) == 1)
+		dir = _which(datash->args[0], datash->_environ);
+		if (check_error_cmd(dir, datash) == 1)
 			return (1);
 	}
 
@@ -184,14 +184,14 @@ int cmd_exec(data_shell *datarel)
 	if (pd == 0)
 	{
 		if (exec == 0)
-			dir = which_cmd(datarel->args[0], datarel->_var);
+			dir = _which(datash->args[0], datash->_environ);
 		else
-			dir = datarel->args[0];
-		execve(dir + exec, datarel->args, datarel->_var);
+			dir = datash->args[0];
+		execve(dir + exec, datash->args, datash->_environ);
 	}
 	else if (pd < 0)
 	{
-		perror(datarel->av[0]);
+		perror(datash->av[0]);
 		return (1);
 	}
 	else
@@ -201,6 +201,6 @@ int cmd_exec(data_shell *datarel)
 		} while (!WIFEXITED(state) && !WIFSIGNALED(state));
 	}
 
-	datarel->status = state / 256;
+	datash->status = state / 256;
 	return (1);
 }
