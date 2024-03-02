@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * swap_char - it swaps | and & for non-printed chars
@@ -81,10 +81,10 @@ void add_nodes(sepa_list **head_s, line_list **head_l, char *input)
  * go_next - it go to the next command line stored
  * @list_s: the separator list
  * @list_l: the command line list
- * @datarel: the data structure
+ * @datash: the data structure
  * Return: it returns nothing
  */
-void go_next(sepa_list **list_s, line_list **list_l, data_shell *datarel)
+void go_next(sepa_list **list_s, line_list **list_l, data_shell *datash)
 {
 	int loop_sepa;
 	sepa_list *ls_s;
@@ -96,7 +96,7 @@ void go_next(sepa_list **list_s, line_list **list_l, data_shell *datarel)
 
 	while (ls_s != NULL && loop_sepa)
 	{
-		if (datarel->status == 0)
+		if (datash->status == 0)
 		{
 			if (ls_s->separator == '&' || ls_s->separator == ';')
 				loop_sepa = 0;
@@ -121,11 +121,11 @@ void go_next(sepa_list **list_s, line_list **list_l, data_shell *datarel)
 /**
  * split_commands - it splits command lines according to
  * the separators ;, | and &, and executes them
- * @datarel: the data structure
+ * @datash: the data structure
  * @input: the input string
  * Return: it returns 0 to exit, 1 to continue
  */
-int split_commands(data_shell *datarel, char *input)
+int split_commands(data_shell *datash, char *input)
 {
 
 	sepa_list *head_s, *list_s;
@@ -142,15 +142,15 @@ int split_commands(data_shell *datarel, char *input)
 
 	while (list_l != NULL)
 	{
-		datarel->input = list_l->line;
-		datarel->args = split_line(datarel->input);
-		loop = exec_line(datarel);
-		free(datarel->args);
+		datash->input = list_l->line;
+		datash->args = split_line(datash->input);
+		loop = exec_line(datash);
+		free(datash->args);
 
 		if (loop == 0)
 			break;
 
-		go_next(&list_s, &list_l, datarel);
+		go_next(&list_s, &list_l, datash);
 
 		if (list_l != NULL)
 			list_l = list_l->next;
