@@ -1,13 +1,13 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * str_concat - concatenate two strings
- * @dest: the char pointer to the dest of the copied str
+ * _strcat - it concatenate two strings
+ * @dest: the char pointer the dest of the copied str
  * @src: the const char pointer the source of str
  * Return:  dest
  */
 
-char *str_concat(char *dest, const char *src)
+char *_strcat(char *dest, const char *src)
 {
 	int x;
 	int j;
@@ -26,13 +26,13 @@ char *str_concat(char *dest, const char *src)
 }
 
 /**
- * *str_copy - it Copies the string pointed to by src.
+ * *_strcpy - it Copies the string pointed to by src.
  * @dest:  char pointer the dest of the copied str
  * @src:  char pointer the source of str
  * Return: dest.
  */
 
-char *str_copy(char *dest, char *src)
+char *_strcpy(char *dest, char *src)
 {
 
 	size_t a;
@@ -47,12 +47,12 @@ char *str_copy(char *dest, char *src)
 }
 
 /**
- * str_cmp - the Function that compares two strings.
+ * _strcmp - the Function that compares two strings.
  * @s1: the type str compared
  * @s2: the type str compared
  * Return: it returns  0.
  */
-int str_cmp(char *s1, char *s2)
+int _strcmp(char *s1, char *s2)
 {
 	int x;
 
@@ -67,12 +67,12 @@ int str_cmp(char *s1, char *s2)
 }
 
 /**
- * str_charr - it locates a character in a string,
+ * _strchr - it locates a character in a string,
  * @s: the string.
  * @c: the character.
  * Return:  pointer to the first occurrence of the character c.
  */
-char *str_char(char *s, char c)
+char *_strchr(char *s, char c)
 {
 	unsigned int x = 0;
 
@@ -85,12 +85,12 @@ char *str_char(char *s, char c)
 }
 
 /**
- * sub_str - it gets the length of a prefix substring.
+ * _strspn - it gets the length of a prefix substring.
  * @s: the initial segment.
  * @accept: the  accepted bytes.
  * Return:  number of accepted bytes.
  */
-int sub_str(char *s, char *accept)
+int _strspn(char *s, char *accept)
 {
 	int x, j, bool;
 
