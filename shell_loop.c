@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * without_comment - it deletes comments from the input
@@ -37,12 +37,12 @@ char *without_comment(char *in)
 
 /**
  * shell_loop - the Loop of shell
- * @datarel: the data relevant (av, input, args)
+ * @datash: the data relevant (av, input, args)
  *
  * Return: it returns nothing.
  */
 
-void shell_loop(data_shell *datarel)
+void shell_loop(data_shell *datash)
 {
 	int loop, i_eof;
 	char *input;
@@ -58,15 +58,15 @@ void shell_loop(data_shell *datarel)
 			if (input == NULL)
 				continue;
 
-			if (check_syntax_error(datarel, input) == 1)
+			if (check_syntax_error(datash, input) == 1)
 			{
-				datarel->status = 2;
+				datash->status = 2;
 				free(input);
 				continue;
 			}
-			input = rep_var(input, datarel);
-			loop = split_commands(datarel, input);
-			datarel->counter += 1;
+			input = rep_var(input, datash);
+			loop = split_commands(datash, input);
+			datash->counter += 1;
 			free(input);
 		}
 		else
