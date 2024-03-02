@@ -1,12 +1,12 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * _memcpy - copies information between void pointers.
+ * _memcpy - it copies information between void pointers.
  * @newptr: destination pointer.
  * @ptr: source pointer.
  * @size: size of the new pointer.
  *
- * Return: returns nothing.
+ * Return: it  returns nothing.
  */
 
 void _memcpy(void *newptr, const void *ptr, unsigned int size)
@@ -60,8 +60,8 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 }
 
 /**
- * _reallocdp - reallocates a memory block of a double pointer.
- * @ptr: doubles pointer to the memory previously allocated.
+ * _reallocdp - it reallocates a memory block of a double pointer.
+ * @ptr: it double pointer to the memory previously allocated.
  * @old_size: size, in bytes, of the allocated space of ptr.
  * @new_size: new size, in bytes, of the new memory block.
  *
