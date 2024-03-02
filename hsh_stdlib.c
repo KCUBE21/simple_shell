@@ -1,11 +1,11 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * get_length - it getsthe lenght of a number.
+ * get_len - it Get the lenght of a number.
  * @n: the type int number.
  * Return: Always return Lenght of a number.
  */
-int get_length(int n)
+int get_len(int n)
 {
 	unsigned int n1;
 	int lenght = 1;
@@ -36,7 +36,7 @@ int get_length(int n)
 char *hsh_itoa(int n)
 {
 	unsigned int n1;
-	int lenght = get_length(n);
+	int lenght = get_len(n);
 	char *buffer;
 
 	buffer = malloc(sizeof(char) * (lenght + 1));
