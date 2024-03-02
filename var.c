@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * check_env - it checks if the typed variable is an env variable
@@ -138,20 +138,20 @@ char *replaced_input(r_var **head, char *input, char *new_input, int nlen)
 /**
  * rep_var - it calls functions to replace string into vars
  * @input: the input string
- * @datarel: the data structure
+ * @datash: the data structure
  * Return: it replace string
  */
 
-char *rep_var(char *input, data_shell *datarel)
+char *rep_var(char *input, data_shell *datash)
 {
 	r_var *head, *indx;
 	char *status, *new_input;
 	int olen, nlen;
 
-	status = hsh_itoa(datarel->status);
+	status = hsh_itoa(datash->status);
 	head = NULL;
 
-	olen = check_vars(&head, input, status, datarel);
+	olen = check_vars(&head, input, status, datash);
 
 	if (head == NULL)
 	{
