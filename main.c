@@ -1,52 +1,52 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * free_data - it frees data structure
- * @datarel:the  data structure
+ * @datash:the  data structure
  * Return: it returns nothing
  */
 
-void free_data(data_shell *datarel)
+void free_data(data_shell *datash)
 {
 	unsigned int x;
 
-	for (x = 0; datarel->_environ[x]; x++)
+	for (x = 0; datash->_environ[x]; x++)
 	{
-		free(datarel->_environ[x]);
+		free(datash->_environ[x]);
 	}
 
-	free(datarel->_environ);
-	free(datarel->pid);
+	free(datash->_environ);
+	free(datash->pid);
 }
 
 /**
  * set_data - it initialize data structure
- * @datarel: the data struture
+ * @datash: the data struture
  * @av: the argument vector
  * Return: it returns nothing
  */
 
-void set_data(data_shell *datarel, char **av)
+void set_data(data_shell *datash, char **av)
 {
 	unsigned int x;
 
-	datarel->av = av;
-	datarel->input = NULL;
-	datarel->args = NULL;
-	datarel->status = 0;
-	datarel->counter = 1;
+	datash->av = av;
+	datash->input = NULL;
+	datash->args = NULL;
+	datash->status = 0;
+	datash->counter = 1;
 
 	for (x = 0; environ[x]; x++)
 		;
-	datarel->_environ = malloc(sizeof(char *) * (x + 1));
+	datash->_environ = malloc(sizeof(char *) * (x + 1));
 
 	for (x = 0; environ[x]; x++)
 	{
-		datarel->_environ[x] = _strdup(environ[x]);
+		datash->_environ[x] = _strdup(environ[x]);
 	}
 
-	datarel->_environ[x] = NULL;
-	datarel->pid = hsh_itoa(getpid());
+	datash->_environ[x] = NULL;
+	datash->pid = hsh_itoa(getpid());
 }
 
 /**
@@ -58,14 +58,14 @@ void set_data(data_shell *datarel, char **av)
 
 int main(int ac, char **av)
 {
-	data_shell datarel;
+	data_shell datash;
 	(void) ac;
 
 	signal(SIGINT, get_sigint);
-	set_data(&datarel, av);
-	shell_loop(&datarel);
-	free_data(&datarel);
-	if (datarel.status < 0)
+	set_data(&datash, av);
+	shell_loop(&datash);
+	free_data(&datash);
+	if (datash.status < 0)
 		return (255);
-	return (datarel.status);
+	return (datash.status);
 }
