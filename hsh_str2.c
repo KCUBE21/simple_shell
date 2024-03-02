@@ -1,7 +1,7 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * _strdup - duplicates str in the heap memory.
+ * _strdup - the duplicates a str in the heap memory.
  * @s: the Type char pointer str
  * Return: the duplicated str
  */
@@ -39,7 +39,7 @@ int _strlen(const char *s)
  * @str: the input string.
  * @delim: the delimiter.
  *
- * Return: Returns 1 if equal, 0 if not.
+ * Return: Returs 1 if are equals, 0 if not.
  */
 
 int cmp_chars(char str[], const char *delim)
@@ -114,12 +114,12 @@ char *_strtok(char str[], const char *delim)
 
 
 /**
- * _isnum - defines if string passed is a number
+ * _isdigit - it defines if string passed is a number
  * @s: the input string
  * Return: Returns 1 if string is a number. 0 in other case.
  */
 
-int _isnum(const char *s)
+int _isdigit(const char *s)
 {
 	unsigned int x;
 
@@ -130,4 +130,3 @@ int _isnum(const char *s)
 	}
 	return (1);
 }
-
